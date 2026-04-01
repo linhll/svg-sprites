@@ -1,0 +1,141 @@
+$radius-item: 8px;
+
+.collections-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+  padding: 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  .collections-sidebar-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .collections-title {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+
+  .collections-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+
+    > li {
+      @media (max-width: 768px) {
+        flex: 1 1 140px;
+        min-width: 120px;
+      }
+    }
+  }
+
+  .collections-item-wrap {
+    display: flex;
+    align-items: stretch;
+    gap: 0.2rem;
+    border-radius: $radius-item;
+    border: 1px solid transparent;
+    background: color-mix(in srgb, var(--bg) 65%, transparent);
+
+    &.is-active {
+      border-color: var(--accent-border);
+      background: var(--accent-bg);
+    }
+  }
+
+  .collections-item {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.35rem;
+    padding: 0.45rem 0.5rem;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    font: inherit;
+    font-size: 0.88rem;
+    color: var(--text-h);
+    cursor: pointer;
+    text-align: left;
+    transition:
+      background 0.12s ease,
+      color 0.12s ease;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &:not(:disabled):active {
+      transform: scale(0.99);
+    }
+  }
+
+  .collections-item-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .collections-item-count {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: color-mix(in srgb, var(--border) 35%, transparent);
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+  }
+
+  .collections-rename-btn,
+  .collections-delete {
+    flex-shrink: 0;
+    width: 1.65rem;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.85rem;
+    line-height: 1;
+    transition:
+      background 0.12s ease,
+      color 0.12s ease;
+
+    &:not(:disabled):hover {
+      background: var(--preview-bg);
+      color: var(--text-h);
+    }
+  }
+
+  .collections-delete:not(:disabled):hover {
+    color: var(--danger);
+    background: var(--danger-bg);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+
+    .collections-list {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+}

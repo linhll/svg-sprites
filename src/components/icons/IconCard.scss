@@ -1,0 +1,139 @@
+@use '../../styles/mixins' as *;
+
+.icon-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--accent-border) 55%, var(--border));
+  }
+
+  .icon-collection-tag {
+    font-size: 0.72rem;
+    color: var(--accent);
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-border);
+    padding: 0.15rem 0.4rem;
+    border-radius: 6px;
+    justify-self: start;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  .icon-card-select {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 2;
+    margin: 0;
+    padding: 0.2rem;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    border-radius: 6px;
+
+    input {
+      width: 1rem;
+      height: 1rem;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+  }
+
+  .icon-preview {
+    flex: 0 0 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: var(--preview-bg);
+    border-bottom: 1px solid var(--border);
+
+    :is(svg) {
+      max-width: 72px;
+      max-height: 72px;
+      width: auto;
+      height: auto;
+    }
+  }
+
+  .icon-meta {
+    padding: 0.65rem 0.75rem 0.75rem;
+    display: grid;
+    gap: 0.45rem;
+    position: relative;
+    padding-right: 2.25rem;
+  }
+
+  .icon-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-h);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .symbol-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin: 0;
+  }
+
+  .symbol-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+
+  .symbol-input {
+    font: var(--mono);
+    font-size: 0.78rem;
+    padding: 0.3rem 0.45rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text-h);
+    @include transition-input-border;
+    @include input-focus-ring;
+  }
+
+  .btn-icon-remove {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.35rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    line-height: 1;
+    font-size: 1.25rem;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition:
+      color 0.12s ease,
+      background 0.12s ease;
+
+    &:not(:disabled):active {
+      transform: scale(0.94);
+    }
+
+    &:not(:disabled):hover {
+      color: var(--danger);
+      background: var(--danger-bg);
+    }
+  }
+}

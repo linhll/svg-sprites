@@ -1,0 +1,52 @@
+/* Match `.app-main` horizontal padding — full-bleed scroll, content inset inside. */
+$app-main-inline: clamp(1rem, 3vw, 2rem);
+/* Extra inset so cards don’t sit flush against the gutters. */
+$grid-pad-extra-inline: 0.35rem;
+
+.icon-grid-panel {
+  .icon-grid-panel__status {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    padding: 2rem 0;
+    text-align: center;
+  }
+
+  &--placeholder {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-inline: calc(-1 * #{$app-main-inline});
+    padding-inline: $app-main-inline;
+  }
+
+  &--scroll {
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-inline: calc(-1 * #{$app-main-inline});
+    scrollbar-gutter: stable;
+    padding-block: 1rem 1.75rem;
+  }
+
+  &__virtual {
+    position: relative;
+    width: 100%;
+    padding-inline: calc(#{$app-main-inline} + #{$grid-pad-extra-inline});
+    box-sizing: border-box;
+  }
+
+  &__row {
+    list-style: none;
+    margin: 0;
+    padding-inline: 2rem;
+    box-sizing: border-box;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(var(--icon-grid-cols, 1), minmax(0, 1fr));
+  }
+}

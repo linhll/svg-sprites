@@ -1,0 +1,21 @@
+.toast {
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  color: var(--text-h);
+  font-size: 0.9rem;
+  animation: toast-reveal 0.22s ease;
+}
+
+@keyframes toast-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

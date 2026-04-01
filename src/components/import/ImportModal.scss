@@ -1,0 +1,180 @@
+@use "../../styles/mixins" as *;
+
+.import-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: color-mix(in srgb, var(--text-h) 35%, transparent);
+  backdrop-filter: blur(4px);
+}
+
+.import-modal {
+  width: min(100%, 420px);
+  max-height: min(90vh, 520px);
+  overflow: auto;
+  padding: 1.35rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.import-modal__title {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.import-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.import-modal__label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.import-modal__select,
+.import-modal__input {
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-h);
+  width: 100%;
+  @include transition-input-border;
+  @include input-focus-ring;
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+.import-modal__hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.import-modal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.import-modal__actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.import-modal__progress {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 92%, var(--text-muted));
+}
+
+.import-modal__progress-title {
+  margin: 0 0 0.35rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.import-modal__progress-file {
+  margin: 0 0 0.65rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+  word-break: break-all;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+}
+
+.import-modal__progress-name {
+  color: var(--text-h);
+}
+
+.import-modal__progress-count {
+  white-space: nowrap;
+}
+
+.import-modal__progress-hint {
+  margin: 0 0 0.65rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.import-modal__meter {
+  display: block;
+  width: 100%;
+  height: 0.5rem;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 999px;
+  border: none;
+  background: color-mix(in srgb, var(--border) 55%, transparent);
+  accent-color: var(--accent, #3b82f6);
+
+  &::-webkit-progress-bar {
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--border) 55%, transparent);
+  }
+
+  &::-webkit-progress-value {
+    border-radius: 999px;
+    background: var(--accent, #3b82f6);
+  }
+
+  &::-moz-progress-bar {
+    border-radius: 999px;
+    background: var(--accent, #3b82f6);
+  }
+}
+
+.import-modal__meter--indeterminate {
+  position: relative;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--border) 55%, transparent);
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 38%;
+    border-radius: 999px;
+    background: var(--accent, #3b82f6);
+    animation: import-modal-meter-shuttle 0.9s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes import-modal-meter-shuttle {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(162%);
+  }
+}

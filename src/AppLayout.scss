@@ -1,0 +1,43 @@
+.app-layout {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  align-items: stretch;
+
+  > .collections-sidebar {
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .app-main {
+    display: flex;
+    flex-direction: column;
+    padding: 0 clamp(1rem, 3vw, 2rem) 0;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    text-align: left;
+  }
+
+  .app-main__sticky-toolbar {
+    margin-inline: calc(-1 * clamp(1rem, 3vw, 2rem));
+    padding: 1rem clamp(1rem, 3vw, 2rem);
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+
+    > .collections-sidebar {
+      flex-shrink: 0;
+      max-height: min(38vh, 280px);
+    }
+
+    .app-main {
+      flex: 1;
+      min-height: 0;
+    }
+  }
+}

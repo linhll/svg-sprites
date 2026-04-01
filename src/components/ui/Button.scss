@@ -1,0 +1,71 @@
+$radius-btn: 8px;
+$transition-btn: 0.15s ease;
+
+.btn {
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: $radius-btn;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-h);
+  cursor: pointer;
+  transition:
+    background $transition-btn,
+    border-color $transition-btn,
+    box-shadow $transition-btn;
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled) {
+    &:hover {
+      border-color: var(--accent-border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  &-primary {
+    background: var(--accent-bg);
+    border-color: var(--accent-border);
+    color: var(--text-h);
+  }
+
+  &-accent {
+    background: var(--accent);
+    color: var(--accent-contrast);
+    border-color: transparent;
+
+    &:not(:disabled):hover {
+      filter: brightness(1.05);
+      border-color: transparent;
+    }
+  }
+
+  &-danger-outline {
+    border-color: var(--danger-border);
+    color: var(--danger);
+    background: var(--danger-bg);
+
+    &:not(:disabled):hover {
+      border-color: var(--danger);
+    }
+  }
+
+  &-ghost {
+    background: transparent;
+    font-size: 0.85rem;
+    padding: 0.35rem 0.6rem;
+  }
+
+  &-small {
+    font-size: 0.78rem;
+    padding: 0.28rem 0.5rem;
+  }
+}

@@ -1,0 +1,61 @@
+@mixin input-focus-ring {
+  &:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-bg);
+  }
+}
+
+@mixin transition-input-border($duration: 0.15s) {
+  transition:
+    border-color $duration ease,
+    box-shadow $duration ease;
+}
+
+@mixin theme-light-tokens {
+  color-scheme: light;
+  --text: #4b5563;
+  --text-h: #111827;
+  --text-muted: #6b7280;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --border: #e2e8f0;
+  --preview-bg: #f1f5f9;
+  --accent: #6366f1;
+  --accent-bg: rgba(99, 102, 241, 0.12);
+  --accent-border: rgba(99, 102, 241, 0.45);
+  --accent-contrast: #ffffff;
+  --danger: #dc2626;
+  --danger-bg: rgba(220, 38, 38, 0.08);
+  --danger-border: rgba(220, 38, 38, 0.35);
+  --shadow-sm:
+    0 1px 2px rgba(15, 23, 42, 0.06),
+    0 1px 3px rgba(15, 23, 42, 0.08);
+  --toggle-track: #e2e8f0;
+  --toggle-thumb: #ffffff;
+  --toggle-border: #cbd5e1;
+}
+
+@mixin theme-dark-tokens {
+  color-scheme: dark;
+  --text: #ffffff;
+  --text-h: #f1f5f9;
+  --text-muted: #64748b;
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --border: #334155;
+  --preview-bg: #0f172a;
+  --accent: #818cf8;
+  --accent-bg: rgba(129, 140, 248, 0.15);
+  --accent-border: rgba(129, 140, 248, 0.45);
+  --accent-contrast: #0f172a;
+  --danger: #f87171;
+  --danger-bg: rgba(248, 113, 113, 0.12);
+  --danger-border: rgba(248, 113, 113, 0.35);
+  --shadow-sm:
+    0 1px 2px rgba(0, 0, 0, 0.35),
+    0 1px 3px rgba(0, 0, 0, 0.45);
+  --toggle-track: #334155;
+  --toggle-thumb: #e2e8f0;
+  --toggle-border: #475569;
+}
