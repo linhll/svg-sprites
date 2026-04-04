@@ -1,112 +1,120 @@
-import type { SvgIconRecord } from '../types'
+import type { SvgIconRecord } from "../types";
 
-const SVG_NS = 'http://www.w3.org/2000/svg'
+const SVG_NS = "http://www.w3.org/2000/svg";
 
 export function slugifySymbolId(name: string): string {
   let s = name
     .trim()
     .toLowerCase()
-    .replace(/\.svg$/i, '')
-    .replace(/\s+/g, '-')
-    .replace(/[^a-z0-9_-]+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
-  if (!s) s = 'icon'
-  if (/^[0-9-]/.test(s)) s = `icon-${s}`
-  return s
+    .replace(/\.svg$/i, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9_-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+  if (!s) s = "icon";
+  if (/^[0-9-]/.test(s)) s = `icon-${s}`;
+  return s;
 }
 
 function parseLength(val: string | null): number | null {
-  if (!val) return null
-  const n = parseFloat(val.replace(/px$/i, '').trim())
-  return Number.isFinite(n) ? n : null
+  if (!val) return null;
+  const n = parseFloat(val.replace(/px$/i, "").trim());
+  return Number.isFinite(n) ? n : null;
 }
 
 function escapeAttr(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/"/g, '&quot;')
-    .replace(/</g, '&lt;')
+  return s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 }
 
 export function extractSymbolParts(svgText: string): {
-  viewBox: string
-  innerXml: string
+  viewBox: string;
+  innerXml: string;
+  fill?: string;
+  stroke?: string;
 } {
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(svgText, 'image/svg+xml')
-  const parseErr = doc.querySelector('parsererror')
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(svgText, "image/svg+xml");
+  const parseErr = doc.querySelector("parsererror");
   if (parseErr) {
-    throw new Error('Invalid SVG or could not parse document')
+    throw new Error("Invalid SVG or could not parse document");
   }
-  const svg = doc.querySelector('svg')
+  const svg = doc.querySelector("svg");
   if (!svg) {
-    throw new Error('Could not find root <svg> element')
+    throw new Error("Could not find root <svg> element");
   }
 
-  let viewBox = svg.getAttribute('viewBox')?.trim() ?? ''
+  let viewBox = svg.getAttribute("viewBox")?.trim() ?? "";
   if (!viewBox) {
-    const w = parseLength(svg.getAttribute('width'))
-    const h = parseLength(svg.getAttribute('height'))
+    const w = parseLength(svg.getAttribute("width"));
+    const h = parseLength(svg.getAttribute("height"));
     if (w != null && h != null) {
-      viewBox = `0 0 ${w} ${h}`
+      viewBox = `0 0 ${w} ${h}`;
     } else {
-      viewBox = '0 0 24 24'
+      viewBox = "0 0 24 24";
     }
   }
 
-  const serializer = new XMLSerializer()
-  let innerXml = ''
+  const fill = svg.getAttribute("fill")?.trim();
+  const stroke = svg.getAttribute("stroke")?.trim();
+
+  const serializer = new XMLSerializer();
+  let innerXml = "";
   for (const node of Array.from(svg.childNodes)) {
-    innerXml += serializer.serializeToString(node)
+    innerXml += serializer.serializeToString(node);
   }
 
-  return { viewBox, innerXml }
+  return { viewBox, innerXml, fill, stroke };
 }
 
 function allocateUniqueSymbolId(base: string, used: Set<string>): string {
-  let id = slugifySymbolId(base)
-  if (!id) id = 'icon'
-  let candidate = id
-  let n = 2
+  let id = slugifySymbolId(base);
+  if (!id) id = "icon";
+  let candidate = id;
+  let n = 2;
   while (used.has(candidate)) {
-    candidate = `${id}-${n++}`
+    candidate = `${id}-${n++}`;
   }
-  used.add(candidate)
-  return candidate
+  used.add(candidate);
+  return candidate;
 }
 
 export function buildSpriteSvg(icons: SvgIconRecord[]): string {
-  const used = new Set<string>()
-  const parts: string[] = []
+  const used = new Set<string>();
+  const parts: string[] = [];
 
   for (const icon of icons) {
-    const { viewBox, innerXml } = extractSymbolParts(icon.svgRaw)
-    const symId = allocateUniqueSymbolId(icon.symbolId || icon.name, used)
+    const { viewBox, innerXml, fill, stroke } = extractSymbolParts(icon.svgRaw);
+    const symId = allocateUniqueSymbolId(icon.symbolId || icon.name, used);
+    const fillAttr = fill ? ` fill="${escapeAttr(fill)}"` : "";
+    const strokeAttr = stroke ? ` stroke="${escapeAttr(stroke)}"` : "";
     parts.push(
-      `<symbol id="${escapeAttr(symId)}" viewBox="${escapeAttr(viewBox)}">${innerXml}</symbol>`,
-    )
+      `<symbol id="${escapeAttr(symId)}" viewBox="${escapeAttr(viewBox)}"${fillAttr}${strokeAttr}>${innerXml}</symbol>`,
+    );
   }
 
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
     `<svg xmlns="${SVG_NS}" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:none" aria-hidden="true">`,
-    '<defs>',
+    "<defs>",
     ...parts,
-    '</defs>',
-    '</svg>',
-  ].join('\n')
+    "</defs>",
+    "</svg>",
+  ].join("\n");
 }
 
-export function downloadTextFile(filename: string, content: string, mime: string): void {
-  const blob = new Blob([content], { type: mime })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = filename
-  a.rel = 'noopener'
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-  URL.revokeObjectURL(url)
+export function downloadTextFile(
+  filename: string,
+  content: string,
+  mime: string,
+): void {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.rel = "noopener";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
